@@ -62,20 +62,32 @@
     </header>
 
     <!-- Main Content -->
-    <main class="pt-24 pb-16 px-6 sm:px-10 max-w-4xl mx-auto">
-        <h1>Τα Projects μου</h1>
+    <main class="pt-24 pb-16 px-6 sm:px-10 max-w-7xl mx-auto">
+        <h1 class="text-4xl font-bold text-purple-400 mb-10 text-center">Τα Projects μου</h1>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($projects as $project)
-                <div class="bg-gray-800 rounded-xl p-4 shadow-lg">
-                    <h2 class="text-xl font-bold text-purple-400">{{ $project->title }}</h2>
-                    <p class="text-gray-300">{{ $project->description }}</p>
-                    <a href="{{ route('projects.show', $project) }}" class="text-purple-500 hover:underline">Δείτε
-                        Περισσότερα →</a>
+                <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                    @if ($project->thumbnail)
+                        <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumbnail"
+                            class="w-full h-48 object-cover">
+                    @else
+                        <div class="w-full h-48 bg-gray-700 flex items-center justify-center text-gray-400">
+                            Χωρίς εικόνα
+                        </div>
+                    @endif
+
+                    <div class="p-5 flex flex-col flex-grow">
+                        <h2 class="text-2xl font-semibold text-purple-300 mb-2">{{ $project->title }}</h2>
+                        <p class="text-gray-300 mb-4 flex-grow">{{ $project->short_description }}</p>
+                        <a href="{{ route('projects.show', $project) }}"
+                            class="text-purple-400 hover:underline font-semibold mt-auto">Δείτε Περισσότερα →</a>
+                    </div>
                 </div>
             @endforeach
         </div>
     </main>
+
 </body>
 
 </html>

@@ -1,26 +1,21 @@
 <!DOCTYPE html>
 <html lang="el">
+
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>{{ $project->title }} | Virtual Portfolio</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
-
-    <style>
-        body {
-            font-family: 'Instrument Sans', sans-serif;
-        }
-    </style>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css" />
 </head>
-<body class="bg-gray-900 text-white min-h-screen">
 
+<body class="bg-gray-900 text-white min-h-screen">
     <!-- Header -->
     <header class="bg-black/50 backdrop-blur-md border-b border-white/10 fixed top-0 w-full z-20">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
-            <a href="{{ route('projects.index') }}" class="text-white text-xl font-semibold hover:text-purple-400 transition">
-                VirtualWorld
-            </a>
+            <a href="{{ route('projects.index') }}"
+                class="text-white text-xl font-semibold hover:text-purple-400 transition">VirtualWorld</a>
         </div>
     </header>
 
@@ -33,18 +28,19 @@
         <section class="bg-gray-800 rounded-xl p-6 shadow-lg">
             <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
 
-            <p class="text-gray-300 text-lg leading-relaxed mb-8">
-                {{ $project->full_description }}
-            </p>
+            <p class="text-gray-300 text-lg leading-relaxed mb-8">{{ $project->full_description }}</p>
 
             @if($project->screenshots && count($project->screenshots))
                 <h2 class="text-2xl font-semibold text-purple-300 mb-4">Screenshots</h2>
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                     @foreach ($project->screenshots as $screenshot)
-                        <div class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow">
-                            <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
-                                class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
-                        </div>
+                        <a data-fancybox="gallery" href="{{ asset('storage/' . $screenshot) }}">
+                            <div
+                                class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
+                                <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
+                                    class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
+                            </div>
+                        </a>
                     @endforeach
                 </div>
             @endif
@@ -54,14 +50,20 @@
                 <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
                     @foreach ($project->links as $link)
                         <li>
-                            <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
-                                {{ $link }}
-                            </a>
+                            <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
+                                class="hover:underline">{{ $link }}</a>
                         </li>
                     @endforeach
                 </ul>
             @endif
         </section>
     </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
+    <script>
+        // Απλό bind χωρίς options
+        Fancybox.bind("[data-fancybox]");
+    </script>
 </body>
+
 </html>
