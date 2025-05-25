@@ -4,10 +4,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Projects | Virtual Portfolio</title>
+    <title>Projects | VirtualWorld</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
+    <link rel="icon" href="./img/logo-img.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
 
     <style>
@@ -37,7 +38,7 @@
                     <a href="./" class="text-gray-300 hover:text-white transition">Αρχική</a>
                     <a href="#" class="text-gray-300 hover:text-white transition">Projects</a>
                     <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
-                    <a href="#contact" class="text-gray-300 hover:text-white transition">Επικοινωνία</a>
+                    <a href="./contact" class="text-gray-300 hover:text-white transition">Ομάδα</a>
                 </nav>
 
                 <!-- Mobile Hamburger -->
@@ -57,7 +58,7 @@
             <a href="./" class="block py-2 text-gray-300 hover:text-white">Αρχική</a>
             <a href="#" class="block py-2 text-gray-300 hover:text-white">Projects</a>
             <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
-            <a href="#contact" class="block py-2 text-gray-300 hover:text-white">Επικοινωνία</a>
+            <a href="./contact" class="block py-2 text-gray-300 hover:text-white">Ομάδα</a>
         </div>
     </header>
 
@@ -67,26 +68,32 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             @foreach ($projects as $project)
-                <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col">
-                    @if ($project->thumbnail)
-                        <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumbnail"
-                            class="w-full h-48 object-cover">
-                    @else
-                        <div class="w-full h-48 bg-gray-700 flex items-center justify-center text-gray-400">
-                            Χωρίς εικόνα
-                        </div>
-                    @endif
-
-                    <div class="p-5 flex flex-col flex-grow">
-                        <h2 class="text-2xl font-semibold text-purple-300 mb-2">{{ $project->title }}</h2>
-                        <p class="text-gray-300 mb-4 flex-grow">{{ $project->short_description }}</p>
-                        <a href="{{ route('projects.show', $project) }}"
-                            class="text-purple-400 hover:underline font-semibold mt-auto">Δείτε Περισσότερα →</a>
-                    </div>
+            <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                @if ($project->thumbnail)
+                <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumbnail"
+                    class="w-full h-48 object-cover">
+                @else
+                <div class="w-full h-48 bg-gray-700 flex items-center justify-center text-gray-400">
+                    Χωρίς εικόνα
                 </div>
+                @endif
+
+                <div class="p-5 flex flex-col flex-grow">
+                    <h2 class="text-2xl font-semibold text-purple-300 mb-2">{{ $project->title }}</h2>
+                    <p class="text-gray-300 mb-4 flex-grow">{{ $project->short_description }}</p>
+                    <a href="{{ route('projects.show', $project) }}"
+                        class="text-purple-400 hover:underline font-semibold mt-auto">Δείτε Περισσότερα →</a>
+                </div>
+            </div>
             @endforeach
         </div>
     </main>
+    <script>
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+    </script>
 
 </body>
 

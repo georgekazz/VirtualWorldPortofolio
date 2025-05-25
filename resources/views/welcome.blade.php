@@ -4,7 +4,8 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Virtual Portfolio</title>
+    <title>Virtual World</title>
+    <link rel="icon" href="./img/logo-img.png" type="image/x-icon">
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -47,7 +48,7 @@
                     <a href="./" class="text-gray-300 hover:text-white transition">Αρχική</a>
                     <a href="./projects" class="text-gray-300 hover:text-white transition">Projects</a>
                     <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
-                    <a href="#contact" class="text-gray-300 hover:text-white transition">Επικοινωνία</a>
+                    <a href="./contact" class="text-gray-300 hover:text-white transition">Ομάδα</a>
                 </nav>
 
                 <!-- Mobile Hamburger -->
@@ -67,7 +68,7 @@
             <a href="./" class="block py-2 text-gray-300 hover:text-white">Αρχική</a>
             <a href="./projects" class="block py-2 text-gray-300 hover:text-white">Projects</a>
             <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
-            <a href="#contact" class="block py-2 text-gray-300 hover:text-white">Επικοινωνία</a>
+            <a href="./contact" class="block py-2 text-gray-300 hover:text-white">Ομάδα</a>
         </div>
     </header>
 
@@ -83,7 +84,7 @@
         <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mb-6 leading-relaxed">
             Εδώ θα βρείτε τα έργα μου στον ψηφιακό κόσμο, με έμφαση σε 3D περιβάλλοντα και διαδραστικές εμπειρίες.
         </p>
-        <a href="#projects"
+        <a href="./projects"
             class="bg-purple-600 hover:bg-purple-700 transition px-6 py-3 rounded-xl text-white shadow-lg text-sm sm:text-base md:text-lg">
             Δείτε τα Projects
         </a>
@@ -93,7 +94,9 @@
     <script>
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true });
+        const renderer = new THREE.WebGLRenderer({
+            alpha: true
+        });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('three-canvas').appendChild(renderer.domElement);
 
@@ -108,11 +111,17 @@
 
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
+        const textureLoader = new THREE.TextureLoader();
+        const circleTexture = textureLoader.load('./img/disc.png'); // ή τοπικό asset
+
         const particlesMaterial = new THREE.PointsMaterial({
             color: 0x7f00ff,
-            size: 0.2,
+            size: 0.5,
             transparent: true,
-            opacity: 0.6,
+            opacity: 0.8,
+            map: circleTexture,
+            alphaTest: 0.01,
+            depthWrite: false
         });
 
         const particles = new THREE.Points(particlesGeometry, particlesMaterial);
@@ -138,7 +147,7 @@
         });
     </script>
     <script>
-        document.getElementById('mobile-menu-button').addEventListener('click', function () {
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         });
