@@ -194,7 +194,15 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $project->created_at->format('Y-m-d') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-center space-x-3">
                                 <a href="#" class="text-blue-500 hover:text-blue-700" title="Επεξεργασία"><i class="fas fa-edit"></i></a>
-                                <a href="#" class="text-red-500 hover:text-red-700" title="Διαγραφή"><i class="fas fa-trash-alt"></i></a>
+
+                                <!-- Φόρμα διαγραφής με confirm -->
+                                <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="inline" onsubmit="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτό το project;');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" title="Διαγραφή" class="text-red-500 hover:text-red-700 bg-transparent border-0 cursor-pointer">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         @empty
@@ -203,6 +211,7 @@
                         </tr>
                         @endforelse
                     </tbody>
+
                 </table>
             </div>
         </section>

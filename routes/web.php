@@ -35,5 +35,5 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
      // Προαιρετικά για edit, update, delete
     // Route::get('projects/{project}/edit', [ProjectController::class, 'edit'])->name('admin.projects.edit');
     // Route::put('projects/{project}', [ProjectController::class, 'update'])->name('admin.projects.update');
-    // Route::delete('projects/{project}', [ProjectController::class, 'destroy'])->name('admin.projects.destroy');
+    Route::delete('projects/{project}', [AdminProjectController::class, 'destroy'])->name('admin.projects.destroy');
 });

@@ -56,4 +56,11 @@ class AdminProjectController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Το project αποθηκεύτηκε επιτυχώς!');
     }
+
+    public function destroy(Project $project)
+    {
+        $project->delete();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Το project διαγράφηκε επιτυχώς!');
+    }
 }
