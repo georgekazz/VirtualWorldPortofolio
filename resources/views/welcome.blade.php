@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>AR_edutainment</title>
     <link rel="icon" href="./img/logo-img.png" type="image/x-icon">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
 
     <!-- Font -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -88,7 +89,71 @@
             Δείτε τα Projects
         </a>
     </div>
+    <!-- Floating Button -->
+    <div id="floatingBtn"
+        class="fixed bottom-4 left-4 w-14 h-14 bg-purple-600 text-white flex items-center justify-center rounded-full shadow-lg cursor-pointer z-50 animate-bounce transition-transform duration-300 ease-in-out">
+        <i class="fas fa-circle-info text-xl"></i>
+    </div>
 
+    <!-- Modal -->
+    <div id="infoModal"
+        class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 hidden">
+        <div class="bg-gray-800 text-white rounded-lg p-6 max-w-md shadow-2xl relative">
+            <button onclick="toggleModal()" class="absolute top-2 right-3 text-white text-2xl">&times;</button>
+            <h2 class="text-xl font-bold mb-4">Σχετικά με αυτό το site</h2>
+            <p class="text-gray-300 leading-relaxed">
+                <b>Το site δημιουργήθηκε από τον Γιώργο-Χριστόφορο Καζλάρη με Laravel, Tailwind CSS.</b><br>
+                Στόχος της πλατφόρμας είναι η φιλοξενία εφαρμογών Επαυξημένης Πραγματικότητας (AR), οι οποίες έχουν υλοποιηθεί στο πλαίσιο Πτυχιακών και Διπλωματικών εργασιών, υπό την επίβλεψη του Καθηγητή Ευκλείδη Κεραμόπουλου. </p>
+        </div>
+    </div>
+
+    <script>
+        const btn = document.getElementById('floatingBtn');
+        const modal = document.getElementById('infoModal');
+
+        let isDragging = false;
+        let hasMoved = false;
+        let offsetX, offsetY;
+
+        btn.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            hasMoved = false;
+            offsetX = e.clientX - btn.getBoundingClientRect().left;
+            offsetY = e.clientY - btn.getBoundingClientRect().top;
+            btn.classList.remove('animate-bounce');
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            hasMoved = true;
+            const x = e.clientX - offsetX;
+            const y = e.clientY - offsetY;
+            btn.style.left = `${x}px`;
+            btn.style.top = `${y}px`;
+            btn.style.right = 'auto';
+            btn.style.bottom = 'auto';
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isDragging) {
+                isDragging = false;
+                setTimeout(() => hasMoved = false, 100);
+                btn.classList.add('animate-bounce');
+                document.body.style.userSelect = '';
+            }
+        });
+
+        btn.addEventListener('click', () => {
+            if (!hasMoved && !isDragging) {
+                toggleModal();
+            }
+        });
+
+        function toggleModal() {
+            modal.classList.toggle('hidden');
+        }
+    </script>
 
     <script>
         const scene = new THREE.Scene();
@@ -100,7 +165,7 @@
         document.getElementById('three-canvas').appendChild(renderer.domElement);
 
         const particlesGeometry = new THREE.BufferGeometry();
-        const count = 5000;
+        const count = 500;
 
         const positions = new Float32Array(count * 3);
 
@@ -111,7 +176,7 @@
         particlesGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
 
         const textureLoader = new THREE.TextureLoader();
-        const circleTexture = textureLoader.load('./img/disc.png'); // ή τοπικό asset
+        const circleTexture = textureLoader.load('./img/disc.png');
 
         const particlesMaterial = new THREE.PointsMaterial({
             color: 0x7f00ff,
@@ -132,7 +197,7 @@
             requestAnimationFrame(animate);
 
             particles.rotation.y += 0.001;
-            particles.rotation.x += 0.0005;
+            particles.rotation.x += 0.0002;
 
             renderer.render(scene, camera);
         };
