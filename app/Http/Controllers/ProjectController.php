@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Project;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class ProjectController extends Controller
 {
-    public function index()
+  public function index()
     {
         $projects = Project::latest()->get();
         return view('projects.index', compact('projects'));

@@ -20,6 +20,7 @@
     </header>
 
     <!-- Main -->
+    <!-- Main -->
     <main class="pt-24 pb-16 px-6 sm:px-10 max-w-5xl mx-auto">
         <a href="{{ route('projects.index') }}" class="text-purple-400 hover:underline mb-8 inline-block text-lg">
             &larr; Πίσω στα Projects
@@ -28,36 +29,42 @@
         <section class="bg-gray-800 rounded-xl p-6 shadow-lg">
             <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
 
-            <p class="text-gray-300 text-lg leading-relaxed mb-8">{{ $project->full_description }}</p>
+            <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
 
-            @if($project->screenshots && count($project->screenshots))
-                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Screenshots</h2>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                    @foreach ($project->screenshots as $screenshot)
-                        <a data-fancybox="gallery" href="{{ asset('storage/' . $screenshot) }}">
-                            <div
-                                class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
-                                <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
-                                    class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+            @php
+            $screenshots = is_string($project->screenshots) ? json_decode($project->screenshots, true) : $project->screenshots;
+            $links = is_string($project->links) ? json_decode($project->links, true) : $project->links;
+            @endphp
+
+            @if($screenshots && count($screenshots))
+            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Screenshots</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                @foreach ($screenshots as $screenshot)
+                <a data-fancybox="gallery" href="{{ asset('storage/' . $screenshot) }}">
+                    <div
+                        class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
+                        <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
+                            class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
+                    </div>
+                </a>
+                @endforeach
+            </div>
             @endif
 
-            @if($project->links && count($project->links))
-                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
-                <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
-                    @foreach ($project->links as $link)
-                        <li>
-                            <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
-                                class="hover:underline">{{ $link }}</a>
-                        </li>
-                    @endforeach
-                </ul>
+            @if($links && count($links))
+            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
+            <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
+                @foreach ($links as $link)
+                <li>
+                    <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
+                        class="hover:underline">{{ $link }}</a>
+                </li>
+                @endforeach
+            </ul>
             @endif
         </section>
     </main>
+
 
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>
     <script>

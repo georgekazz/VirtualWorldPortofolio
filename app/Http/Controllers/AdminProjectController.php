@@ -15,35 +15,34 @@ class AdminProjectController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string',
-            'short_description' => 'required|string',
+            'title' => 'required|string|max:255',
+            'short_description' => 'required|string|max:500',
             'full_description' => 'required|string',
-            'thumbnail' => 'nullable|image',
-            'screenshots.*' => 'nullable|image',
+            'thumbnail' => 'required|image|max:2048',
+            'screenshots.*' => 'image|max:4096',
+            'links' => 'nullable|string',
         ]);
 
-        $thumbnailPath = $request->hasFile('thumbnail')
-            ? $request->file('thumbnail')->store('projects', 'public')
-            : null;
+        // Αποθήκευση thumbnail
+        $thumbnailPath = $request->file('thumbnail')->store('projects/thumbnails', 'public');
 
+        // Αποθήκευση screenshots (πολλα αρχεία)
         $screenshotsPaths = [];
         if ($request->hasFile('screenshots')) {
-            foreach ($request->file('screenshots') as $screenshot) {
-                $screenshotsPaths[] = $screenshot->store('projects', 'public');
+            foreach ($request->file('screenshots') as $file) {
+                $screenshotsPaths[] = $file->store('projects/screenshots', 'public');
             }
         }
 
-        $links = array_filter(array_map('trim', explode("\n", $request->input('links'))));
-
-        Project::create([
+        $project = Project::create([
             'title' => $request->title,
             'short_description' => $request->short_description,
             'full_description' => $request->full_description,
             'thumbnail' => $thumbnailPath,
-            'screenshots' => $screenshotsPaths,
-            'links' => $links,
+            'screenshots' => json_encode($screenshotsPaths),
+            'links' => $request->links,
         ]);
 
-        return redirect()->route('projects.index')->with('success', 'Το project προστέθηκε επιτυχώς.');
+        return redirect()->route('admin.dashboard')->with('success', 'Project δημιουργήθηκε με επιτυχία!');
     }
 }
