@@ -20,16 +20,22 @@
     </header>
 
     <!-- Main -->
-    <!-- Main -->
     <main class="pt-24 pb-16 px-6 sm:px-10 max-w-5xl mx-auto">
         <a href="{{ route('projects.index') }}" class="text-purple-400 hover:underline mb-8 inline-block text-lg">
             &larr; Πίσω στα Projects
         </a>
 
         <section class="bg-gray-800 rounded-xl p-6 shadow-lg">
-            <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
+        <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
 
-            <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
+        @if ($project->thumbnail)
+            <div class="mb-8">
+                <img src="{{ asset('storage/' . ltrim($project->thumbnail, '/')) }}" alt="Thumbnail"
+                    class="w-full max-h-96 object-cover rounded-xl shadow-lg" />
+            </div>
+        @endif
+
+        <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
 
             @php
             $screenshots = json_decode($project->screenshots, true) ?? [];
