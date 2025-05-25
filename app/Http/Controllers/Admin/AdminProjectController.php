@@ -12,7 +12,7 @@ class AdminProjectController extends Controller
 {
     public function index()
     {
-        $projects = Project::orderBy('created_at', 'desc')->get();
+        $projects = Project::orderBy('created_at', 'desc')->paginate(12);
         return view('admin.dashboard', compact('projects'));
     }
 
@@ -90,7 +90,7 @@ class AdminProjectController extends Controller
             $project->thumbnail = $thumbnailPath;
         }
 
-        // Αν ανεβάστηκαν νέα screenshots, αποθήκευσέ τα (και αντικατέστησε τα παλιά)
+        // Αν ανεβάστηκαν νέα screenshots, αποθήκευσέ τα
         if ($request->hasFile('screenshots')) {
             $screenshotsPaths = [];
             foreach ($request->file('screenshots') as $file) {
@@ -99,7 +99,6 @@ class AdminProjectController extends Controller
             $project->screenshots = json_encode($screenshotsPaths);
         }
 
-        // Ενημέρωσε τα υπόλοιπα πεδία
         $project->title = $request->title;
         $project->short_description = $request->short_description;
         $project->full_description = $request->full_description;
