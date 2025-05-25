@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Virtual World</title>
+    <title>AR_edutainment</title>
     <link rel="icon" href="./img/logo-img.png" type="image/x-icon">
 
     <!-- Font -->
@@ -39,7 +39,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="./" class="text-xl font-semibold text-white hover:text-purple-400 transition">
-                        VirtualWorld
+                        AR_edutainment
                     </a>
                 </div>
 
@@ -47,8 +47,8 @@
                 <nav class="hidden md:flex space-x-8">
                     <a href="./" class="text-gray-300 hover:text-white transition">Αρχική</a>
                     <a href="./projects" class="text-gray-300 hover:text-white transition">Projects</a>
-                    <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
                     <a href="./contact" class="text-gray-300 hover:text-white transition">Ομάδα</a>
+                    <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
                 </nav>
 
                 <!-- Mobile Hamburger -->
@@ -67,8 +67,8 @@
         <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
             <a href="./" class="block py-2 text-gray-300 hover:text-white">Αρχική</a>
             <a href="./projects" class="block py-2 text-gray-300 hover:text-white">Projects</a>
-            <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
             <a href="./contact" class="block py-2 text-gray-300 hover:text-white">Ομάδα</a>
+            <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
         </div>
     </header>
 
@@ -79,11 +79,10 @@
     <div
         class="relative z-10 flex flex-col justify-center items-center text-center min-h-screen px-4 sm:px-6 md:px-10 lg:px-16 mt-16">
         <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-tight">
-            Καλώς ήρθες στο <span class="text-purple-400">Virtual Portfolio</span>
+            Καλώς ήρθες στο <span class="text-purple-400">AR_edutainment</span>
         </h1>
         <p class="text-base sm:text-lg md:text-xl text-gray-300 max-w-2xl mb-6 leading-relaxed">
-            Εδώ θα βρείτε τα έργα μου στον ψηφιακό κόσμο, με έμφαση σε 3D περιβάλλοντα και διαδραστικές εμπειρίες.
-        </p>
+            Εδώ θα βρείτε τα έργα Επαυξημένης Πραγματικότητας που έχουν υλοποιηθεί μέχρι σήμερα στα πλαίσια Πτυχιακών/Διπλωματικών. Όλη αυτή τη δημιουργική προσπάθεια επιμελείται ο καθηγητής <b>Ευκλείδης Κεραμόπουλος. </b> </p>
         <a href="./projects"
             class="bg-purple-600 hover:bg-purple-700 transition px-6 py-3 rounded-xl text-white shadow-lg text-sm sm:text-base md:text-lg">
             Δείτε τα Projects

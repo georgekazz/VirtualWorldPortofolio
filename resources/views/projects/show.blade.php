@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8" />
-    <title>{{ $project->title }} | Virtual Portfolio</title>
+    <title>{{ $project->title }} | AR_edutainment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -15,7 +15,7 @@
     <header class="bg-black/50 backdrop-blur-md border-b border-white/10 fixed top-0 w-full z-20">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
             <a href="{{ route('projects.index') }}"
-                class="text-white text-xl font-semibold hover:text-purple-400 transition">VirtualWorld</a>
+                class="text-white text-xl font-semibold hover:text-purple-400 transition">AR_edutainment</a>
         </div>
     </header>
 

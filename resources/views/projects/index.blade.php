@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Projects | VirtualWorld</title>
+    <title>Projects | AR_edutainment</title>
 
     <link rel="preconnect" href="https://fonts.bunny.net" />
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
@@ -28,7 +28,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="./" class="text-xl font-semibold text-white hover:text-purple-400 transition">
-                        VirtualWorld
+                        AR_edutainment
                     </a>
                 </div>
 
@@ -36,8 +36,8 @@
                 <nav class="hidden md:flex space-x-8">
                     <a href="./" class="text-gray-300 hover:text-white transition">Αρχική</a>
                     <a href="#" class="text-gray-300 hover:text-white transition">Projects</a>
-                    <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
                     <a href="./contact" class="text-gray-300 hover:text-white transition">Ομάδα</a>
+                    <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
                 </nav>
 
                 <!-- Mobile Hamburger -->
@@ -56,8 +56,8 @@
         <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
             <a href="./" class="block py-2 text-gray-300 hover:text-white">Αρχική</a>
             <a href="#" class="block py-2 text-gray-300 hover:text-white">Projects</a>
-            <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
             <a href="./contact" class="block py-2 text-gray-300 hover:text-white">Ομάδα</a>
+            <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
         </div>
     </header>
 

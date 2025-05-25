@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Η ομάδα μας | VirtualWorld</title>
+    <title>Η ομάδα μας | AR_edutainment</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -64,7 +64,7 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="./" class="text-xl font-semibold text-white hover:text-purple-400 transition">
-                        VirtualWorld
+                        AR_edutainment
                     </a>
                 </div>
 
@@ -72,8 +72,8 @@
                 <nav class="hidden md:flex space-x-8">
                     <a href="./" class="text-gray-300 hover:text-white transition">Αρχική</a>
                     <a href="./projects" class="text-gray-300 hover:text-white transition">Projects</a>
-                    <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
                     <a href="#" class="text-gray-300 hover:text-white transition">Ομάδα</a>
+                    <a href="./about" class="text-gray-300 hover:text-white transition">Σχετικά</a>
                 </nav>
 
                 <!-- Mobile Hamburger -->
@@ -92,8 +92,8 @@
         <div id="mobile-menu" class="md:hidden hidden px-4 pb-4">
             <a href="./" class="block py-2 text-gray-300 hover:text-white">Αρχική</a>
             <a href="./projects" class="block py-2 text-gray-300 hover:text-white">Projects</a>
-            <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
             <a href="#" class="block py-2 text-gray-300 hover:text-white">Ομάδα</a>
+            <a href="./about" class="block py-2 text-gray-300 hover:text-white">Σχετικά</a>
         </div>
     </header>
 
