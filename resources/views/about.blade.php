@@ -34,7 +34,7 @@
         .bg-grid-pattern {
             background-image:
                 linear-gradient(rgba(147, 51, 234, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(147, 51, 234, 0.1) 1px, transparent 1px);
+                linear-gradient(90deg, rgba(100, 51, 234, 0.1) 1px, transparent 1px);
             background-size: 40px 40px;
         }
     </style>
@@ -132,7 +132,7 @@
             antialias: true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // διαφανές
+        renderer.setClearColor(0x000000, 0);
 
         // Ομάδα για όλους τους κύβους
         const cubesGroup = new THREE.Group();
@@ -140,11 +140,11 @@
 
         const cubeCount = 40;
         const cubeSize = 1.2;
-        const radius = 12; // ακτίνα γύρω από το κέντρο (κείμενο)
+        const radius = 12;
 
         const colors = [
-            new THREE.Color(0x7f00ff), // μωβ
-            new THREE.Color(0x0055ff) // μπλε
+            new THREE.Color(0x7f00ff), 
+            new THREE.Color(0x0055ff) 
         ];
 
         // Δημιουργούμε τους κύβους
@@ -157,20 +157,18 @@
             });
             const cube = new THREE.Mesh(geometry, material);
 
-            // Τοποθέτηση σε τυχαίο σημείο πάνω σε σφαίρα γύρω από το κέντρο
-            const phi = Math.acos(2 * Math.random() - 1); // 0->π
-            const theta = 2 * Math.PI * Math.random(); // 0->2π
+            const phi = Math.acos(2 * Math.random() - 1); 
+            const theta = 2 * Math.PI * Math.random(); 
             cube.position.set(
                 radius * Math.sin(phi) * Math.cos(theta),
                 radius * Math.sin(phi) * Math.sin(theta),
                 radius * Math.cos(phi)
             );
 
-            // Αποθηκεύουμε τυχαίες ταχύτητες περιστροφής για κάθε κύβο
             cube.userData = {
                 rotationSpeedX: 0.001 + Math.random() * 0.004,
                 rotationSpeedY: 0.001 + Math.random() * 0.004,
-                colorPhase: Math.random() * Math.PI * 2 // για εναλλαγή χρώματος
+                colorPhase: Math.random() * Math.PI * 2 
             };
 
             cubesGroup.add(cube);
@@ -186,18 +184,15 @@
 
         camera.position.z = 25;
 
-        // Animation loop
         function animate(time = 0) {
             requestAnimationFrame(animate);
 
             cubesGroup.children.forEach(cube => {
-                // Περιστροφή
                 cube.rotation.x += cube.userData.rotationSpeedX;
                 cube.rotation.y += cube.userData.rotationSpeedY;
 
-                // Εναλλαγή χρώματος smooth μωβ <-> μπλε
                 cube.userData.colorPhase += 0.01;
-                const t = (Math.sin(cube.userData.colorPhase) + 1) / 2; // 0->1
+                const t = (Math.sin(cube.userData.colorPhase) + 1) / 2; 
                 cube.material.color.lerpColors(colors[0], colors[1], t);
             });
 
@@ -205,7 +200,6 @@
         }
         animate();
 
-        // Responsive resize
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();

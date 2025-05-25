@@ -26,12 +26,14 @@ class AdminProjectController extends Controller
             'thumbnail' => 'required|image|max:2048',  // Μέγιστο 2MB
             'screenshots.*' => 'nullable|image|max:4096', // Μέχρι 4MB ανά εικόνα
             'links' => 'nullable|string|max:1000',
+            'education_level' => 'nullable|string',
+            'class_level' => 'nullable|string',
+            'year' => 'nullable|integer|min:2012|max:' . date('Y'),
+            'project_type' => 'nullable|string',
         ]);
 
-        // Αποθήκευση thumbnail στο disk 'public'
         $thumbnailPath = $request->file('thumbnail')->store('projects/thumbnails', 'public');
 
-        // Αποθήκευση screenshots (multiple) στο disk 'public'
         $screenshotsPaths = [];
         if ($request->hasFile('screenshots')) {
             foreach ($request->file('screenshots') as $file) {
@@ -39,15 +41,17 @@ class AdminProjectController extends Controller
             }
         }
 
-        // Δημιουργία Project στη βάση
         $project = Project::create([
             'title' => $request->title,
             'short_description' => $request->short_description,
             'full_description' => $request->full_description,
-            // Αποθηκεύω μόνο το path (χωρίς Storage::url), για να χρησιμοποιήσω asset('storage/...') μετά
             'thumbnail' => $thumbnailPath,
             'screenshots' => json_encode($screenshotsPaths),
             'links' => $request->links,
+            'education_level' => $request->input('education_level'),
+            'class_level' => $request->input('class_level'),
+            'year' => $request->input('year'),
+            'project_type' => $request->input('project_type'),
         ]);
 
         return redirect()->route('admin.dashboard')->with('success', 'Το project αποθηκεύτηκε επιτυχώς!');

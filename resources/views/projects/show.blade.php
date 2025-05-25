@@ -97,6 +97,36 @@
             @endif
             @endif
 
+            @if ($project->education_level || $project->class_level || $project->year || $project->project_type)
+            <div class="mt-10">
+                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Tags</h2>
+                <div class="flex flex-wrap gap-3">
+                    @if($project->education_level)
+                    <span class="bg-purple-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                        {{ $project->education_level }}
+                    </span>
+                    @endif
+
+                    @if($project->class_level)
+                    <span class="bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                        {{ $project->class_level }}
+                    </span>
+                    @endif
+
+                    @if($project->year)
+                    <span class="bg-pink-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                        {{ $project->year }}
+                    </span>
+                    @endif
+
+                    @if($project->project_type)
+                    <span class="bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                        {{ $project->project_type }}
+                    </span>
+                    @endif
+                </div>
+            </div>
+            @endif
 
 
         </section>
