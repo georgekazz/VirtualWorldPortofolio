@@ -193,7 +193,7 @@
                             <td class="px-6 py-4 whitespace-nowrap">{{ $project->short_description }}</td>
                             <td class="px-6 py-4 whitespace-nowrap">{{ $project->created_at->format('Y-m-d') }}</td>
                             <td class="px-6 py-4 whitespace-nowrap text-center space-x-3">
-                                <a href="#" class="text-blue-500 hover:text-blue-700" title="Επεξεργασία"><i class="fas fa-edit"></i></a>
+                            <a href="{{ route('admin.projects.edit', $project) }}" class="text-blue-500 hover:text-blue-700" title="Επεξεργασία"><i class="fas fa-edit"></i></a>
 
                                 <!-- Φόρμα διαγραφής με confirm -->
                                 <form action="{{ route('admin.projects.destroy', $project->id) }}" method="POST" class="inline" onsubmit="return confirm('Είσαι σίγουρος ότι θέλεις να διαγράψεις αυτό το project;');">

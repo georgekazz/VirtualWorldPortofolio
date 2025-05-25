@@ -32,8 +32,8 @@ Route::middleware(['auth:admin'])->prefix('admin')->group(function () {
     Route::get('dashboard', [AdminProjectController::class, 'index'])->name('admin.dashboard');
     Route::post('projects', [AdminProjectController::class, 'store'])->name('admin.projects.store');
     Route::post('logout', [AuthController::class, 'logout'])->name('admin.logout');
-     // Προαιρετικά για edit, update, delete
-    // Route::get('projects/{project}/edit', [ProjectController::class, 'edit'])->name('admin.projects.edit');
-    // Route::put('projects/{project}', [ProjectController::class, 'update'])->name('admin.projects.update');
+
+    Route::get('projects/{project}/edit', [AdminProjectController::class, 'edit'])->name('admin.projects.edit');
+    Route::put('projects/{project}', [AdminProjectController::class, 'update'])->name('admin.projects.update');
     Route::delete('projects/{project}', [AdminProjectController::class, 'destroy'])->name('admin.projects.destroy');
 });

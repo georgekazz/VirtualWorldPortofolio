@@ -63,4 +63,54 @@ class AdminProjectController extends Controller
 
         return redirect()->route('admin.dashboard')->with('success', 'Το project διαγράφηκε επιτυχώς!');
     }
+
+    public function edit(Project $project)
+    {
+        return view('admin.edit', compact('project'));
+    }
+
+    public function update(Request $request, Project $project)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'short_description' => 'required|string|max:500',
+            'full_description' => 'required|string',
+            'thumbnail' => 'nullable|image|max:2048',
+            'screenshots.*' => 'nullable|image|max:4096',
+            'links' => 'nullable|string|max:1000',
+            'education_level' => 'nullable|string',
+            'class_level' => 'nullable|string',
+            'year' => 'nullable|integer|min:2012|max:' . date('Y'),
+            'project_type' => 'nullable|string',
+        ]);
+
+        // Αν ανεβάστηκε νέο thumbnail, αποθήκευσέ το
+        if ($request->hasFile('thumbnail')) {
+            $thumbnailPath = $request->file('thumbnail')->store('projects/thumbnails', 'public');
+            $project->thumbnail = $thumbnailPath;
+        }
+
+        // Αν ανεβάστηκαν νέα screenshots, αποθήκευσέ τα (και αντικατέστησε τα παλιά)
+        if ($request->hasFile('screenshots')) {
+            $screenshotsPaths = [];
+            foreach ($request->file('screenshots') as $file) {
+                $screenshotsPaths[] = $file->store('projects/screenshots', 'public');
+            }
+            $project->screenshots = json_encode($screenshotsPaths);
+        }
+
+        // Ενημέρωσε τα υπόλοιπα πεδία
+        $project->title = $request->title;
+        $project->short_description = $request->short_description;
+        $project->full_description = $request->full_description;
+        $project->links = $request->links;
+        $project->education_level = $request->education_level;
+        $project->class_level = $request->class_level;
+        $project->year = $request->year;
+        $project->project_type = $request->project_type;
+
+        $project->save();
+
+        return redirect()->route('admin.dashboard')->with('success', 'Το project ενημερώθηκε επιτυχώς!');
+    }
 }
