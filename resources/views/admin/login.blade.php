@@ -79,20 +79,18 @@
         const errorDiv = document.getElementById('error-message');
 
         form.addEventListener('submit', function(e) {
-            errorDiv.classList.add('hidden'); // κρύβουμε μήνυμα πριν την έλεγχο
+            errorDiv.classList.add('hidden'); 
 
             const email = form.email.value.trim();
             const password = form.password.value.trim();
 
-            // Απλός έλεγχος
             if (!email || !password) {
-                e.preventDefault(); // αποτρέπουμε submit
+                e.preventDefault(); 
                 errorDiv.textContent = 'Παρακαλώ συμπληρώστε email και κωδικό.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
 
-            // Έλεγχος βασικός για έγκυρο email
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             if (!emailRegex.test(email)) {
                 e.preventDefault();
@@ -104,7 +102,7 @@
     </script>
 
     <script>
-        // Three.js setup για μικρούς κύβους background
+
         const canvas = document.getElementById('background-canvas');
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -114,8 +112,7 @@
             antialias: true
         });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        renderer.setClearColor(0x000000, 0); // διαφανές
-
+        renderer.setClearColor(0x000000, 0); 
         const cubesGroup = new THREE.Group();
         scene.add(cubesGroup);
 
@@ -124,8 +121,8 @@
         const radius = 10;
 
         const colors = [
-            new THREE.Color(0x7f00ff), // μωβ
-            new THREE.Color(0x0055ff) // μπλε
+            new THREE.Color(0x7f00ff), 
+            new THREE.Color(0x0055ff) 
         ];
 
         for (let i = 0; i < cubeCount; i++) {
