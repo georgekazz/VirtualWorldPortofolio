@@ -28,14 +28,14 @@ class AdminProjectController extends Controller
             'links' => 'nullable|string|max:1000',
         ]);
 
-        // Αποθήκευση thumbnail
-        $thumbnailPath = $request->file('thumbnail')->store('public/projects/thumbnails');
+        // Αποθήκευση thumbnail στο disk 'public'
+        $thumbnailPath = $request->file('thumbnail')->store('projects/thumbnails', 'public');
 
-        // Αποθήκευση screenshots (multiple)
+        // Αποθήκευση screenshots (multiple) στο disk 'public'
         $screenshotsPaths = [];
         if ($request->hasFile('screenshots')) {
             foreach ($request->file('screenshots') as $file) {
-                $screenshotsPaths[] = $file->store('public/projects/screenshots');
+                $screenshotsPaths[] = $file->store('projects/screenshots', 'public');
             }
         }
 
@@ -44,8 +44,9 @@ class AdminProjectController extends Controller
             'title' => $request->title,
             'short_description' => $request->short_description,
             'full_description' => $request->full_description,
-            'thumbnail' => Storage::url($thumbnailPath),
-            'screenshots' => json_encode(array_map(fn($p) => Storage::url($p), $screenshotsPaths)),
+            // Αποθηκεύω μόνο το path (χωρίς Storage::url), για να χρησιμοποιήσω asset('storage/...') μετά
+            'thumbnail' => $thumbnailPath,
+            'screenshots' => json_encode($screenshotsPaths),
             'links' => $request->links,
         ]);
 

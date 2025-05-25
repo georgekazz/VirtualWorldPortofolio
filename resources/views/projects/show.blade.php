@@ -32,7 +32,7 @@
             <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
 
             @php
-            $screenshots = is_string($project->screenshots) ? json_decode($project->screenshots, true) : $project->screenshots;
+            $screenshots = json_decode($project->screenshots, true) ?? [];
             $links = is_string($project->links) ? json_decode($project->links, true) : $project->links;
             @endphp
 
@@ -41,8 +41,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
                 @foreach ($screenshots as $screenshot)
                 <a data-fancybox="gallery" href="{{ asset('storage/' . $screenshot) }}">
-                    <div
-                        class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
+                    <div class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
                         <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
                             class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
                     </div>
@@ -51,7 +50,7 @@
             </div>
             @endif
 
-            @if($links && count($links))
+            @if($links && is_array($links) && count($links))
             <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
             <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
                 @foreach ($links as $link)
@@ -61,7 +60,11 @@
                 </li>
                 @endforeach
             </ul>
+            @elseif($links && is_string($links))
+            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμος</h2>
+            <p><a href="{{ $links }}" target="_blank" rel="noopener noreferrer" class="hover:underline">{{ $links }}</a></p>
             @endif
+
         </section>
     </main>
 
