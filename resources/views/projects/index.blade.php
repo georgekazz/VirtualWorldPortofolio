@@ -15,7 +15,6 @@
         body {
             font-family: 'Instrument Sans', sans-serif;
             background-color: #1a202c;
-            /* Tailwind's gray-900 */
             color: white;
         }
     </style>
@@ -64,11 +63,21 @@
 
     <!-- Main Content -->
     <main class="pt-24 pb-16 px-6 sm:px-10 max-w-7xl mx-auto">
-        <h1 class="text-4xl font-bold text-purple-400 mb-10 text-center">Τα Projects μου</h1>
+        <h1 class="text-4xl font-bold text-purple-400 mb-10 text-center">Projects</h1>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <!-- Search Bar -->
+        <div class="mb-8 max-w-md mx-auto">
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Αναζήτηση Project..."
+                class="w-full px-4 py-2 rounded-lg border border-gray-600 bg-gray-700 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8" id="projectsGrid">
             @foreach ($projects as $project)
-            <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col">
+            <div class="bg-gray-800 rounded-2xl shadow-lg overflow-hidden flex flex-col project-card"
+                data-title="{{ strtolower($project->title) }}">
                 @if ($project->thumbnail)
                 <img src="{{ asset('storage/' . $project->thumbnail) }}" alt="Thumbnail"
                     class="w-full h-48 object-cover">
@@ -87,14 +96,65 @@
             </div>
             @endforeach
         </div>
+
+        <!-- Pagination -->
+        <div id="pagination" class="flex justify-center mt-8 space-x-2"></div>
     </main>
+
     <script>
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('hidden');
         });
-    </script>
 
+        const projectsPerPage = 12;
+        let currentPage = 1;
+
+        const searchInput = document.getElementById('searchInput');
+        const projectCards = Array.from(document.querySelectorAll('.project-card'));
+        const paginationContainer = document.getElementById('pagination');
+
+        let filteredProjects = projectCards;
+
+        function displayProjects(page = 1, filteredProjectsParam = null) {
+            const projects = filteredProjectsParam || filteredProjects;
+            const totalPages = Math.ceil(projects.length / projectsPerPage);
+            currentPage = Math.min(page, totalPages) || 1;
+
+            projectCards.forEach(card => card.style.display = 'none');
+
+            const start = (currentPage - 1) * projectsPerPage;
+            const end = start + projectsPerPage;
+            projects.slice(start, end).forEach(card => card.style.display = 'flex');
+
+            renderPagination(totalPages);
+        }
+
+        function renderPagination(totalPages) {
+            paginationContainer.innerHTML = '';
+            if (totalPages <= 1) return;
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement('button');
+                btn.textContent = i;
+                btn.className = `px-3 py-1 rounded ${
+                    i === currentPage ? 'bg-purple-600 text-white' : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                }`;
+                btn.addEventListener('click', () => displayProjects(i));
+                paginationContainer.appendChild(btn);
+            }
+        }
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.trim().toLowerCase();
+            filteredProjects = projectCards.filter(card =>
+                card.getAttribute('data-title').includes(query)
+            );
+            displayProjects(1, filteredProjects);
+        });
+
+        displayProjects();
+    </script>
 </body>
 
 </html>
