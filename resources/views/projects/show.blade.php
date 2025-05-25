@@ -50,20 +50,48 @@
             </div>
             @endif
 
-            @if($links && is_array($links) && count($links))
-            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
-            <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
-                @foreach ($links as $link)
-                <li>
-                    <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
-                        class="hover:underline">{{ $link }}</a>
-                </li>
-                @endforeach
-            </ul>
-            @elseif($links && is_string($links))
+            @php
+                $decodedLinks = json_decode($project->links, true);
+            @endphp
+
+            @if ($decodedLinks && is_array($decodedLinks) && count($decodedLinks))
+                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
+                <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
+                    @foreach ($decodedLinks as $link)
+                        @php
+                            $link = trim($link);
+                            $displayLink = preg_replace('#^https?://#', '', $link);
+                        @endphp
+                        @if (filter_var($link, FILTER_VALIDATE_URL))
+                            <li>
+                                <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
+                                    {{ $displayLink }}
+                                </a>
+                            </li>
+                        @endif
+                    @endforeach
+                </ul>
+            @elseif ($project->links && is_string($project->links))
+            @php
+                $link = trim($project->links);
+                $displayLink = preg_replace('#^https?://#', '', $link);
+            @endphp
+            @if (filter_var($link, FILTER_VALIDATE_URL))
             <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμος</h2>
-            <p><a href="{{ $links }}" target="_blank" rel="noopener noreferrer" class="hover:underline">{{ $links }}</a></p>
+            <p>
+                <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
+                class="inline-block bg-purple-600 text-white px-5 py-2 rounded-lg shadow-md
+                        hover:bg-purple-700 transition-colors duration-300 font-semibold
+                        underline hover:no-underline">
+                    Σύνδεσμος
+                </a>
+            </p>
+
+
             @endif
+            @endif
+
+
 
         </section>
     </main>
