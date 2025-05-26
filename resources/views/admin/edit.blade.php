@@ -148,7 +148,7 @@
                     id="class_level"
                     class="w-full rounded-md border border-gray-600 bg-gray-700 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500">
                     <option value="">-- Επιλέξτε --</option>
-                    @foreach(["Α'", "Β'", "Γ'", "Δ'"] as $class)
+                    @foreach(["Α'", "Β'", "Γ'", "Δ'" ,"Ε'","ΣΤ'"] as $class)
                     <option value="{{ $class }}" {{ old('class_level', $project->class_level) == $class ? 'selected' : '' }}>
                         {{ $class }}
                     </option>

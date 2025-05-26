@@ -28,6 +28,11 @@
             inset: 0;
             z-index: 0;
         }
+
+        #cursor-trail {
+            width: 100vw;
+            height: 100vh;
+        }
     </style>
 </head>
 
@@ -103,7 +108,8 @@
             <h2 class="text-xl font-bold mb-4">Σχετικά με αυτό το site</h2>
             <p class="text-gray-300 leading-relaxed">
                 <b>Το site δημιουργήθηκε από τον Γιώργο-Χριστόφορο Καζλάρη με Laravel, Tailwind CSS.</b><br>
-                Στόχος της πλατφόρμας είναι η φιλοξενία εφαρμογών Επαυξημένης Πραγματικότητας (AR), οι οποίες έχουν υλοποιηθεί στο πλαίσιο Πτυχιακών και Διπλωματικών εργασιών, υπό την επίβλεψη του Καθηγητή Ευκλείδη Κεραμόπουλου. </p>
+                Στόχος της πλατφόρμας είναι η φιλοξενία εφαρμογών Επαυξημένης Πραγματικότητας (AR), οι οποίες έχουν υλοποιηθεί στο πλαίσιο Πτυχιακών και Διπλωματικών εργασιών, υπό την επίβλεψη του Καθηγητή Ευκλείδη Κεραμόπουλου.
+            </p>
         </div>
     </div>
 
@@ -180,7 +186,7 @@
 
         const particlesMaterial = new THREE.PointsMaterial({
             color: 0x7f00ff,
-            size: 0.5,
+            size: 0.3,
             transparent: true,
             opacity: 0.8,
             map: circleTexture,
@@ -216,6 +222,50 @@
             menu.classList.toggle('hidden');
         });
     </script>
+
+    <canvas id="cursor-trail" class="pointer-events-none fixed top-0 left-0 z-50"></canvas>
+    <script>
+        const canvas = document.getElementById("cursor-trail");
+        const ctx = canvas.getContext("2d");
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+
+        const trail = [];
+        const maxTrailLength = 10;
+
+        window.addEventListener("resize", () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        document.addEventListener("mousemove", (e) => {
+            trail.push({
+                x: e.clientX,
+                y: e.clientY
+            });
+            if (trail.length > maxTrailLength) trail.shift();
+        });
+
+        function animateCursorTrail() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < trail.length - 1; i++) {
+                const opacity = i / trail.length;
+                ctx.beginPath();
+                ctx.strokeStyle = `rgba(127, 0, 255, ${opacity})`;
+                ctx.lineWidth = 2;
+                ctx.moveTo(trail[i].x, trail[i].y);
+                ctx.lineTo(trail[i + 1].x, trail[i + 1].y);
+                ctx.stroke();
+            }
+
+            requestAnimationFrame(animateCursorTrail);
+        }
+
+        animateCursorTrail();
+    </script>
+
+
 </body>
 
 </html>

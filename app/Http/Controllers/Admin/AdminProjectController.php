@@ -23,7 +23,7 @@ class AdminProjectController extends Controller
             'title' => 'required|string|max:255',
             'short_description' => 'required|string|max:500',
             'full_description' => 'required|string',
-            'thumbnail' => 'required|image|max:2048',  // Μέγιστο 2MB
+            'thumbnail' => 'required|image|max:4096',  // Μέγιστο 4MB
             'screenshots.*' => 'nullable|image|max:4096', // Μέχρι 4MB ανά εικόνα
             'links' => 'nullable|string|max:1000',
             'education_level' => 'nullable|string',

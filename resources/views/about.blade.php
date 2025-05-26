@@ -140,7 +140,7 @@
 
         const cubeCount = 40;
         const cubeSize = 1.2;
-        const radius = 12;
+        const radius = 20;
 
         const colors = [
             new THREE.Color(0x7f00ff), 
@@ -206,6 +206,7 @@
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
     </script>
+
     <script>
         document.getElementById('mobile-menu-button').addEventListener('click', function() {
             const menu = document.getElementById('mobile-menu');

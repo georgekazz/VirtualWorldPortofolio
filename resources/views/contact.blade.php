@@ -56,6 +56,7 @@
 </head>
 
 <body class="text-white min-h-screen">
+    <canvas id="network-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
 
     <!-- Header -->
     <header class="fixed top-0 left-0 w-full z-20 backdrop-blur-md bg-black/40 border-b border-white/10">
@@ -160,6 +161,82 @@
             menu.classList.toggle('hidden');
         });
     </script>
+
+    <script>
+        const canvas = document.getElementById("network-canvas");
+        const ctx = canvas.getContext("2d");
+
+        let width, height, nodes;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        const nodeCount = 60;
+        const connectionDistance = 120;
+
+        function createNodes() {
+            nodes = Array.from({
+                length: nodeCount
+            }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: (Math.random() - 0.5) * 0.6,
+                radius: 2 + Math.random() * 1.5
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < nodeCount; i++) {
+                const a = nodes[i];
+
+                // draw connections
+                for (let j = i + 1; j < nodeCount; j++) {
+                    const b = nodes[j];
+                    const dx = a.x - b.x;
+                    const dy = a.y - b.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        const opacity = 1 - dist / connectionDistance;
+                        ctx.strokeStyle = `rgba(168, 85, 247, ${opacity})`; // purple
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                }
+
+                // draw node
+                ctx.beginPath();
+                ctx.fillStyle = "#a855f7";
+                ctx.arc(a.x, a.y, a.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // update position
+                a.x += a.vx;
+                a.y += a.vy;
+
+                // bounce on edge
+                if (a.x < 0 || a.x > width) a.vx *= -1;
+                if (a.y < 0 || a.y > height) a.vy *= -1;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        createNodes();
+        draw();
+    </script>
+
 
 </body>
 

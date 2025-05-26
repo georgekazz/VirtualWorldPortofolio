@@ -8,9 +8,12 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.css" />
+    <link rel="icon" href="../img/logo-img.png" type="image/x-icon">
 </head>
 
 <body class="bg-gray-900 text-white min-h-screen">
+    <canvas id="network-canvas" class="fixed top-0 left-0 w-full h-full -z-10"></canvas>
+
     <!-- Header -->
     <header class="bg-black/50 backdrop-blur-md border-b border-white/10 fixed top-0 w-full z-20">
         <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
@@ -26,16 +29,16 @@
         </a>
 
         <section class="bg-gray-800 rounded-xl p-6 shadow-lg">
-        <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
+            <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
 
-        @if ($project->thumbnail)
+            @if ($project->thumbnail)
             <div class="mb-8">
                 <img src="{{ asset('storage/' . ltrim($project->thumbnail, '/')) }}" alt="Thumbnail"
                     class="w-full max-h-96 object-cover rounded-xl shadow-lg" />
             </div>
-        @endif
+            @endif
 
-        <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
+            <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
 
             @php
             $screenshots = json_decode($project->screenshots, true) ?? [];
@@ -57,36 +60,36 @@
             @endif
 
             @php
-                $decodedLinks = json_decode($project->links, true);
+            $decodedLinks = json_decode($project->links, true);
             @endphp
 
             @if ($decodedLinks && is_array($decodedLinks) && count($decodedLinks))
-                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
-                <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
-                    @foreach ($decodedLinks as $link)
-                        @php
-                            $link = trim($link);
-                            $displayLink = preg_replace('#^https?://#', '', $link);
-                        @endphp
-                        @if (filter_var($link, FILTER_VALIDATE_URL))
-                            <li>
-                                <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
-                                    {{ $displayLink }}
-                                </a>
-                            </li>
-                        @endif
-                    @endforeach
-                </ul>
+            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
+            <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
+                @foreach ($decodedLinks as $link)
+                @php
+                $link = trim($link);
+                $displayLink = preg_replace('#^https?://#', '', $link);
+                @endphp
+                @if (filter_var($link, FILTER_VALIDATE_URL))
+                <li>
+                    <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
+                        {{ $displayLink }}
+                    </a>
+                </li>
+                @endif
+                @endforeach
+            </ul>
             @elseif ($project->links && is_string($project->links))
             @php
-                $link = trim($project->links);
-                $displayLink = preg_replace('#^https?://#', '', $link);
+            $link = trim($project->links);
+            $displayLink = preg_replace('#^https?://#', '', $link);
             @endphp
             @if (filter_var($link, FILTER_VALIDATE_URL))
             <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμος</h2>
             <p>
                 <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
-                class="inline-block bg-purple-600 text-white px-5 py-2 rounded-lg shadow-md
+                    class="inline-block bg-purple-600 text-white px-5 py-2 rounded-lg shadow-md
                         hover:bg-purple-700 transition-colors duration-300 font-semibold
                         underline hover:no-underline">
                     Σύνδεσμος
@@ -131,6 +134,80 @@
 
         </section>
     </main>
+    <script>
+        const canvas = document.getElementById("network-canvas");
+        const ctx = canvas.getContext("2d");
+
+        let width, height, nodes;
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener("resize", resizeCanvas);
+        resizeCanvas();
+
+        const nodeCount = 60;
+        const connectionDistance = 120;
+
+        function createNodes() {
+            nodes = Array.from({
+                length: nodeCount
+            }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 0.6,
+                vy: (Math.random() - 0.5) * 0.6,
+                radius: 2 + Math.random() * 1.5
+            }));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            for (let i = 0; i < nodeCount; i++) {
+                const a = nodes[i];
+
+                // draw connections
+                for (let j = i + 1; j < nodeCount; j++) {
+                    const b = nodes[j];
+                    const dx = a.x - b.x;
+                    const dy = a.y - b.y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < connectionDistance) {
+                        const opacity = 1 - dist / connectionDistance;
+                        ctx.strokeStyle = `rgba(168, 85, 247, ${opacity})`; // purple
+                        ctx.lineWidth = 1;
+                        ctx.beginPath();
+                        ctx.moveTo(a.x, a.y);
+                        ctx.lineTo(b.x, b.y);
+                        ctx.stroke();
+                    }
+                }
+
+                // draw node
+                ctx.beginPath();
+                ctx.fillStyle = "#a855f7";
+                ctx.arc(a.x, a.y, a.radius, 0, Math.PI * 2);
+                ctx.fill();
+
+                // update position
+                a.x += a.vx;
+                a.y += a.vy;
+
+                // bounce on edge
+                if (a.x < 0 || a.x > width) a.vx *= -1;
+                if (a.y < 0 || a.y > height) a.vy *= -1;
+            }
+
+            requestAnimationFrame(draw);
+        }
+
+        createNodes();
+        draw();
+    </script>
 
 
     <script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5/dist/fancybox/fancybox.umd.js"></script>

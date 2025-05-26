@@ -102,7 +102,8 @@
                                 <option value="Β'" @if(old('class_level', $project->class_level ?? '') == "Β'") selected @endif>Β'</option>
                                 <option value="Γ'" @if(old('class_level', $project->class_level ?? '') == "Γ'") selected @endif>Γ'</option>
                                 <option value="Δ'" @if(old('class_level', $project->class_level ?? '') == "Δ'") selected @endif>Δ'</option>
-                                <!-- Πρόσθεσε όποιες τάξεις θες -->
+                                <option value="Ε'" @if(old('class_level', $project->class_level ?? '') == "Ε'") selected @endif>Ε'</option>
+                                <option value="ΣΤ'" @if(old('class_level', $project->class_level ?? '') == "ΣΤ'") selected @endif>ΣΤ'</option>
                             </select>
                         </div>
 

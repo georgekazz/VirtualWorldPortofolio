@@ -17,8 +17,36 @@
             background-color: #1a202c;
             color: white;
         }
+
+        #scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.3);
+            height: 0%;
+            transition: height 0.2s ease-out;
+        }
+
+        #scroll-line.pulse {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+
+            0%,
+            100% {
+                opacity: 0.6;
+            }
+
+            50% {
+                opacity: 1;
+            }
+        }
     </style>
 </head>
+<div id="scroll-line" class="fixed left-0 top-0 h-full w-1 bg-gradient-to-b from-purple-500 to-fuchsia-500 opacity-70 transition-opacity duration-500 z-40"></div>
 
 <body class="min-h-screen relative bg-gray-900 text-white">
     <!-- Navigation Bar -->
@@ -218,6 +246,34 @@
         searchInput.addEventListener('input', applyFilters);
 
         displayProjects();
+
+        // Scroll-based progress & animation
+        const scrollLine = document.getElementById('scroll-line');
+        const progressLine = document.createElement('div');
+        progressLine.style.position = 'absolute';
+        progressLine.style.left = '0';
+        progressLine.style.top = '0';
+        progressLine.style.width = '100%';
+        progressLine.style.background = 'white';
+        progressLine.style.opacity = '0.3';
+        progressLine.style.height = '0%';
+        scrollLine.appendChild(progressLine);
+
+        function updateScrollLine() {
+            const scrollTop = window.scrollY;
+            const docHeight = document.body.scrollHeight - window.innerHeight;
+            const scrollPercent = (scrollTop / docHeight) * 100;
+            progressLine.style.height = `${scrollPercent}%`;
+
+            if (scrollPercent > 1) {
+                scrollLine.classList.add('pulse');
+            } else {
+                scrollLine.classList.remove('pulse');
+            }
+        }
+
+        window.addEventListener('scroll', updateScrollLine);
+        updateScrollLine();
     </script>
 </body>
 
