@@ -32,103 +32,86 @@
             <h1 class="text-4xl font-bold mb-6 text-purple-400">{{ $project->title }}</h1>
 
             @if ($project->thumbnail)
-            <div class="mb-8">
-                <img src="{{ asset('storage/' . ltrim($project->thumbnail, '/')) }}" alt="Thumbnail"
-                    class="w-full max-h-96 object-cover rounded-xl shadow-lg" />
-            </div>
+                <div class="mb-8">
+                    <img src="{{ asset('storage/' . ltrim($project->thumbnail, '/')) }}" alt="Thumbnail"
+                        class="w-full max-h-96 object-cover rounded-xl shadow-lg" />
+                </div>
             @endif
 
             <p class="text-gray-300 text-lg leading-relaxed mb-8 text-justify">{{ $project->full_description }}</p>
 
             @php
-            $screenshots = json_decode($project->screenshots, true) ?? [];
-            $links = is_string($project->links) ? json_decode($project->links, true) : $project->links;
+                $screenshots = json_decode($project->screenshots, true) ?? [];
+                $links = is_string($project->links) ? json_decode($project->links, true) : $project->links;
             @endphp
 
             @if($screenshots && count($screenshots))
-            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Screenshots</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
-                @foreach ($screenshots as $screenshot)
-                <a data-fancybox="gallery" href="{{ asset('storage/' . $screenshot) }}">
-                    <div class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
-                        <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
-                            class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
-                    </div>
-                </a>
-                @endforeach
-            </div>
+                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Screenshots</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                    @foreach ($screenshots as $screenshot)
+                        <a data-fancybox="gallery" href="{{ asset('storage/' . $screenshot) }}">
+                            <div
+                                class="overflow-hidden rounded-lg shadow-md hover:shadow-purple-500 transition-shadow cursor-pointer">
+                                <img src="{{ asset('storage/' . $screenshot) }}" alt="Screenshot"
+                                    class="object-cover w-full h-56 hover:scale-105 transition-transform duration-300" />
+                            </div>
+                        </a>
+                    @endforeach
+                </div>
             @endif
 
             @php
-            $decodedLinks = json_decode($project->links, true);
+                $decodedLinks = json_decode($project->links, true) ?? [];
             @endphp
 
-            @if ($decodedLinks && is_array($decodedLinks) && count($decodedLinks))
-            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
-            <ul class="list-disc list-inside text-purple-400 space-y-2 mb-2 text-lg">
-                @foreach ($decodedLinks as $link)
-                @php
-                $link = trim($link);
-                $displayLink = preg_replace('#^https?://#', '', $link);
-                @endphp
-                @if (filter_var($link, FILTER_VALIDATE_URL))
-                <li>
-                    <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class="hover:underline">
-                        {{ $displayLink }}
-                    </a>
-                </li>
-                @endif
-                @endforeach
-            </ul>
-            @elseif ($project->links && is_string($project->links))
-            @php
-            $link = trim($project->links);
-            $displayLink = preg_replace('#^https?://#', '', $link);
-            @endphp
-            @if (filter_var($link, FILTER_VALIDATE_URL))
-            <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμος</h2>
-            <p>
-                <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
-                    class="inline-block bg-purple-600 text-white px-5 py-2 rounded-lg shadow-md
-                        hover:bg-purple-700 transition-colors duration-300 font-semibold
-                        underline hover:no-underline">
-                    Σύνδεσμος
-                </a>
-            </p>
-
-
+            @if (is_array($decodedLinks) && count($decodedLinks))
+                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Σύνδεσμοι</h2>
+                <div class="flex flex-wrap gap-3">
+                    @foreach ($decodedLinks as $index => $link)
+                        @php
+                            $link = trim($link);
+                            $displayLink = preg_replace('#^https?://#', '', $link);
+                        @endphp
+                        @if (filter_var($link, FILTER_VALIDATE_URL))
+                            <a href="{{ $link }}" target="_blank" rel="noopener noreferrer"
+                                class="inline-block bg-purple-600 text-white px-4 py-2 rounded-lg shadow-md hover:bg-purple-700 transition-colors duration-300 font-semibold underline hover:no-underline">
+                                Link {{ $index + 1 }}
+                            </a>
+                        @endif
+                    @endforeach
+                </div>
             @endif
-            @endif
+
 
             @if ($project->education_level || $project->class_level || $project->year || $project->project_type)
-            <div class="mt-10">
-                <h2 class="text-2xl font-semibold text-purple-300 mb-4">Tags</h2>
-                <div class="flex flex-wrap gap-3">
-                    @if($project->education_level)
-                    <span class="bg-purple-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
-                        {{ $project->education_level }}
-                    </span>
-                    @endif
+                <div class="mt-10">
+                    <h2 class="text-2xl font-semibold text-purple-300 mb-4">Tags</h2>
+                    <div class="flex flex-wrap gap-3">
+                        @if($project->education_level)
+                            <span class="bg-purple-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                                {{ $project->education_level }}
+                            </span>
+                        @endif
 
-                    @if($project->class_level)
-                    <span class="bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
-                        {{ $project->class_level }}
-                    </span>
-                    @endif
+                        @if($project->class_level)
+                            <span class="bg-indigo-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                                {{ $project->class_level }}
+                            </span>
+                        @endif
 
-                    @if($project->year)
-                    <span class="bg-pink-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
-                        {{ $project->year }}
-                    </span>
-                    @endif
+                        @if($project->year)
+                            <span class="bg-pink-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                                {{ $project->year }}
+                            </span>
+                        @endif
 
-                    @if($project->project_type)
-                    <span class="bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
-                        {{ $project->project_type }}
-                    </span>
-                    @endif
+                        @if($project->project_type)
+                            <span class="bg-green-600 text-white text-sm px-3 py-1 rounded-full shadow-md">
+                                {{ $project->project_type }}
+                            </span>
+                        @endif
+                    </div>
                 </div>
-            </div>
             @endif
 
 

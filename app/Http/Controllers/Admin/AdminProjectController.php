@@ -25,7 +25,8 @@ class AdminProjectController extends Controller
             'full_description' => 'required|string',
             'thumbnail' => 'required|image|max:4096',  // Μέγιστο 4MB
             'screenshots.*' => 'nullable|image|max:4096', // Μέχρι 4MB ανά εικόνα
-            'links' => 'nullable|string|max:1000',
+            'links' => 'nullable|array',
+            'links.*' => 'nullable|url|max:1000',
             'education_level' => 'nullable|string',
             'class_level' => 'nullable|string',
             'year' => 'nullable|integer|min:2012|max:' . date('Y'),
@@ -47,7 +48,7 @@ class AdminProjectController extends Controller
             'full_description' => $request->full_description,
             'thumbnail' => $thumbnailPath,
             'screenshots' => json_encode($screenshotsPaths),
-            'links' => $request->links,
+            'links' => json_encode(array_filter($request->input('links'))),
             'education_level' => $request->input('education_level'),
             'class_level' => $request->input('class_level'),
             'year' => $request->input('year'),
