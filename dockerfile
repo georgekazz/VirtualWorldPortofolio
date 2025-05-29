@@ -45,6 +45,9 @@ ENV COMPOSER_ALLOW_SUPERUSER=1
 RUN npm install && npm run build
 
 RUN composer install --no-dev --optimize-autoloader
+
+RUN php artisan storage:link
+
 # Αντιγραφή .env και δημιουργία κλειδιού Laravel
 RUN cp .env.example .env
 RUN php artisan key:generate
