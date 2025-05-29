@@ -28,7 +28,7 @@ services:
     networks:
       - traefik-net
     depends_on:
-      db:
+      db-aredutainment:
         condition: service_healthy
     labels:
       - "traefik.enable=true"
@@ -36,7 +36,7 @@ services:
       - "traefik.http.routers.aredutainment.entrypoints=websecure"
       - "traefik.http.routers.aredutainment.tls=true"
       - "traefik.http.services.aredutainment.loadbalancer.server.port=80"
-  db:
+  db-aredutainment:
     image: mysql:8.0
     container_name: aredutainment-db
     restart: always
